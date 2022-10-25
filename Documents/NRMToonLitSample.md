@@ -9,10 +9,12 @@
 ## 1. 模型贴图基本信息
 
 **原始模型**
+
 <img  width="600" height="400" src="./img/nrm_model.png">
 
 ### 1.1 亮度
 **亮部贴图RGBA**
+
 <img  width="600" height="400" src="./img/skin08base.png">
 
 **亮部贴图Alpha**
@@ -21,15 +23,18 @@
 
 ### 1.2 阴影
 **暗部颜色RGBA**
+
 <img  width="600" height="400" src="./img/skin08sss.png">
 
 **暗部贴图Alpha**
 用于做某些mask使用。
+
 <img  width="600" height="400" src="./img/skin08sss_a.png">
 
 ### 1.3 LightMap
 **R通道**
 控制高光强度
+
 <img  width="600" height="400" src="./img/ilm_r.png">
 
 **G通道**
@@ -38,10 +43,12 @@
 
 **B通道**
 控制高光范围大小（光滑度）越黑部分高光越小，纯黑区域五高光。
+
 <img width="600" height="400" src="./img/ilm_b.png">
 
 **Alpha通道**
 一张描线图，记录描线，内描线。
+
 <img  width="600" height="400" src="./img/ilm_a.png">
 
 ### 1.4 DetailMap
@@ -52,9 +59,11 @@
 ### 1.5 顶点色
 **顶点色R通道**
 遮挡部分颜色较黑，代表环境光的遮挡。剩余通道控制描边的粗细，深度偏移等信息。
+
 <img  width="600" height="400" src="./img/vertexcolor_r.png">
 
 ## 2. 基础渲染效果
+
 ### 2.1 基础shader Toon
 ```c#
 Shader "Toon"
@@ -310,5 +319,4 @@ half3 final_spec = toon_spec * spec_color * spec_intensity;
 
 <img width="600" height="400" src="./img/hightlightcolor.png">
 
-## 
 
