@@ -8,12 +8,14 @@ Shader "Toon"
 
         _ToonThreshold ("ToonThreshold", Range(0,1)) = 0.5 // 阈值范围
         _ToonHardness ("ToonHardness",Float) = 20.0 // 过渡的生硬情况
+        _SpecSize ("Spec Size",Range(0,1)) = 0.1 // 高光系数
+        _SpecColor ("Spec Color",Color) = (1,1,1,1) // 高光颜色
     }
     SubShader
     {
         Tags
         {
-            "RenderType"="Opaque"
+            "LightMode"="ForwardBase"
         }
         LOD 100
 
@@ -49,6 +51,8 @@ Shader "Toon"
             sampler2D _ILMMap;
             float _ToonThreshold;
             float _ToonHardness;
+            float _SpecSize;
+            float4 _SpecColor;
 
             v2f vert(appdata v)
             {
@@ -68,6 +72,7 @@ Shader "Toon"
 
                 float3 normalDir = normalize(i.normal_world); // 单位向量
                 float3 lightDir = normalize(_WorldSpaceLightPos0.xyz); // 光照方向
+                float3 viewDir = normalize(_WorldSpaceCameraPos - i.pos_world.xyz); // 视觉方向
 
                 // Base贴图
                 half4 base_map = tex2D(_BaseMap, uv1);
@@ -98,7 +103,22 @@ Shader "Toon"
                 // half3 final_diffuse = toon_diffuse * base_color; // 颜色*base图片的灰度值
                 half3 final_diffuse = lerp(sss_color, base_color, toon_diffuse);
 
-                return float4(final_diffuse, 1.0);
+                // 高光处理
+                float NdotV = (dot(normalDir, viewDir) + 1.0) * 0.5; //拿到NdotV并进行数值范围缩放
+                float spec_trem = NdotV * ao + diffuse_control; // 光线偏移
+                // 当前高光是基于视角的高光 真正高光收到光照方向的影响
+                spec_trem = half_lambert * 0.9 + spec_trem * 0.1; // 高光权重分配
+                // 限制边缘
+                half toon_spec = saturate((spec_trem - (1.0 - spec_size * _SpecSize)) * 500); // 内部数值越大越光滑
+
+                // 自定义的高光颜色与原来的颜色进行混合
+                half spec_color = (_SpecColor.xyz + base_color) * 0.5;
+                half3 final_spec = toon_spec * spec_color * spec_intensity;
+
+                // 描线效果
+                
+                half3 final_color = final_diffuse + final_spec;
+                return float4(final_color, 1.0);
             }
             ENDCG
         }

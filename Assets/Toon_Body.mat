@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ILMMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b255b91f82d45f64b9eb3507f168170d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -42,7 +42,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _SpecSize: 0.15
     - _ToonHardness: 50
     - _ToonThreshold: 0.6
-    m_Colors: []
+    m_Colors:
+    - _SpecColor: {r: 0.9811321, g: 0.70037436, b: 0.1527234, a: 1}
   m_BuildTextureStacks: []

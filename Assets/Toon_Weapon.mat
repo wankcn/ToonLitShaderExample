@@ -42,7 +42,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _SpecSize: 0.1
     - _ToonHardness: 20
     - _ToonThreshold: 0.5
-    m_Colors: []
+    m_Colors:
+    - _SpecColor: {r: 0.9433962, g: 0.6208919, b: 0.14684942, a: 1}
   m_BuildTextureStacks: []

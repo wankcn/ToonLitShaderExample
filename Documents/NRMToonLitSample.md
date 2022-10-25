@@ -54,7 +54,7 @@
 遮挡部分颜色较黑，代表环境光的遮挡。剩余通道控制描边的粗细，深度偏移等信息。
 <img align="left" width="600" height="400" src="./img/vertexcolor_r.png">
 
-## 2. 简单渲染效果
+## 2. 基础渲染效果
 ### 2.1 基础shader Toon
 ```c#
 Shader "Toon"
@@ -239,13 +239,76 @@ half lambert_term = half_lambert * ao + diffuse_control;
 
 <img align="left" width="600" height="400" src="./img/aomessage.png">
 
-### 2.3  阶段性渲染效果展示
+### 2.3  当前渲染效果展示
 
 <img align="left" width="500" height="500" src="./gif/toonlisample1.gif">
 
 ## 3. 卡通高光
 
-一个完整的效果应该有漫反射和高光反射，上一节完成了漫反射效果。
+### 3.1 增加高光效果
+
+一个完整的效果应该有漫反射和高光反射，上一节完成了漫反射效果。圈中的金属质感部分需要进行高光处理
 
 <img align="left" width="600" height="400" src="./img/needhighlight.png">
+
+ILM图的B通道控制高光形状的大小，高光部分越黑越光滑，形状也越小。
+
+<img align="left" width="600" height="400" src="./img/highlightsize.png">
+
+使用NotV进行计算，并且为这个值加上偏移结果
+
+```c#
+// 视觉方向
+float3 viewDir = normalize(_WorldSpaceCameraPos - i.pos_world.xyz); 
+```
+
+```c#
+// 高光处理
+float NdotV = (dot(normalDir, viewDir) + 1.0) * 0.5; //拿到NdotV并进行数值范围缩放
+float spec_trem = NdotV * ao + diffuse_control; // 光线偏移
+```
+
+<img align="left" width="600" height="400" src="./img/ndotv.png">
+
+**增加高光系数**
+
+```c#
+_SpecSize ("Spec Size",Range(0,1)) = 0.1 // 高光系数
+```
+
+```c#
+// 高光处理 拿到NdotV并进行数值范围缩放
+float NdotV = (dot(normalDir, viewDir) + 1.0) * 0.5;
+float spec_trem = NdotV * ao + diffuse_control; // 光线偏移
+// 当前高光是基于视角的高光 真正高光收到光照方向的影响
+spec_trem = half_lambert * 0.9 + spec_trem * 0.1; // 高光权重分配
+// 限制边缘
+half toon_spec = saturate((spec_trem - (1.0 - spec_size * _SpecSize)) * 500); // 内部数值越大越光滑
+```
+
+<img align="left" width="600" height="400" src="./gif/light.gif">
+
+对高光和Base颜色进行叠加，金属部分光线对比之前漫反射渲染效果有了明显变化。
+
+```c#
+half3 final_spec = toon_spec * base_color * spec_intensity;
+half3 final_color = final_diffuse + final_spec;
+return float4(final_color, 1.0);
+```
+
+<img align="left" width="500" height="500" src="./gif/lightdone.gif">
+
+### 3.2 高光颜色优化
+
+对高光颜色优化，增加可自定义的高光颜色。
+
+```c#
+// 自定义的高光颜色与原来的颜色进行混合
+half spec_color = (_SpecColor.xyz + base_color) * 0.5;
+half3 final_spec = toon_spec * spec_color * spec_intensity;
+```
+
+<img align="left" width="600" height="400" src="./img/hightlightcolor.png">
+
+## 4. 角色描边
 
