@@ -9,50 +9,50 @@
 ## 1. 模型贴图基本信息
 
 **原始模型**
-<img align="left" width="600" height="400" src="./img/nrm_model.png">
+<img  width="600" height="400" src="./img/nrm_model.png">
 
 ### 1.1 亮度
 **亮部贴图RGBA**
-<img align="left" width="600" height="400" src="./img/skin08base.png">
+<img  width="600" height="400" src="./img/skin08base.png">
 
 **亮部贴图Alpha**
 用于区分人物的皮肤区域以及非皮肤区域。
-<img align="left" width="600" height="400" src="./img/skin08base_a.png">
+<img  width="600" height="400" src="./img/skin08base_a.png">
 
 ### 1.2 阴影
 **暗部颜色RGBA**
-<img align="left" width="600" height="400" src="./img/skin08sss.png">
+<img  width="600" height="400" src="./img/skin08sss.png">
 
 **暗部贴图Alpha**
 用于做某些mask使用。
-<img align="left" width="600" height="400" src="./img/skin08sss_a.png">
+<img  width="600" height="400" src="./img/skin08sss_a.png">
 
 ### 1.3 LightMap
 **R通道**
 控制高光强度
-<img align="left" width="600" height="400" src="./img/ilm_r.png">
+<img  width="600" height="400" src="./img/ilm_r.png">
 
 **G通道**
 偏移光照，越黑部分越接近阴影，越白部分越接近亮部。128中度灰不会对原来光线进行偏移。
-<img align="left" width="600" height="400" src="./img/ilm_g.png">
+<img  width="600" height="400" src="./img/ilm_g.png">
 
 **B通道**
 控制高光范围大小（光滑度）越黑部分高光越小，纯黑区域五高光。
-<img align="left" width="600" height="400" src="./img/ilm_b.png">
+<img width="600" height="400" src="./img/ilm_b.png">
 
 **Alpha通道**
 一张描线图，记录描线，内描线。
-<img align="left" width="600" height="400" src="./img/ilm_a.png">
+<img  width="600" height="400" src="./img/ilm_a.png">
 
 ### 1.4 DetailMap
 **Detail的RGBA**
 使用第二套UV采样，也是描线图。但UV分部并不严格。按照第二套UV做点缀使用。
-<img align="left" width="600" height="400" src="./img/detail.png">
+<img  width="600" height="400" src="./img/detail.png">
 
 ### 1.5 顶点色
 **顶点色R通道**
 遮挡部分颜色较黑，代表环境光的遮挡。剩余通道控制描边的粗细，深度偏移等信息。
-<img align="left" width="600" height="400" src="./img/vertexcolor_r.png">
+<img  width="600" height="400" src="./img/vertexcolor_r.png">
 
 ## 2. 基础渲染效果
 ### 2.1 基础shader Toon
@@ -137,7 +137,7 @@ half NdotL = dot(normalDir,lightDir);
 return NdotL.xxxx;
 ```
 
-<img align="left" width="600" height="400" src="./img/light.png">
+<img  width="600" height="400" src="./img/light.png">
 
 
 
@@ -149,7 +149,7 @@ return NdotL.xxxx;
 half toon_diffuse = step(0.0, NdotL); // 色阶化
 ```
 
-<img align="left" width="600" height="400" src="./gif/color_order.gif">
+<img  width="600" height="400" src="./gif/color_order.gif">
 
 **图形色阶化**
 
@@ -172,7 +172,7 @@ half3 final_diffuse = toon_diffuse * base_color;
 return float4(final_diffuse, 1.0);
 ```
 
-<img align="left" width="600" height="400" src="./img/color_order.png">
+<img  width="600" height="400" src="./img/color_order.png">
 
 **提高阴影面的亮度**
 
@@ -182,7 +182,7 @@ return float4(final_diffuse, 1.0);
 toon_diffuse = saturate(toon_diffuse + 0.5); // 提亮光照
 ```
 
-<img align="left" width="600" height="400" src="./img/add_light.png">
+<img width="600" height="400" src="./img/add_light.png">
 
 2.采用阴影面贴图，拿到阴影面rgb和toondiffuse做插值计算
 
@@ -194,7 +194,7 @@ half half_lambert = (NdotL + 1.0) * 0.5;
 half toon_diffuse = saturate((half_lambert - _ToonThreshold) * _ToonHardness);
 half3 final_diffuse = lerp(sss_color, base_color, toon_diffuse);
 ```
-<img align="left" width="600" height="400" src="./img/lerp_light.png">
+<img width="600" height="400" src="./img/lerp_light.png">
 
 
 #### 第二步：增加ILM贴图
@@ -210,7 +210,7 @@ float inner_line = ilm_map.a; // 用来控制内描线
 
 当前头发没有任何阴影，需要为头发末端添加光照阴影。
 
-<img align="left" width="600" height="400" src="./img/hair_lim_g.png">
+<img  width="600" height="400" src="./img/hair_lim_g.png">
 
 光照贴图的g通道，提前预设阴影区域，给角色头发做光照偏移的效果。这是一张灰度图，以0.5为分界线，灰度值高于128（0.5）的部分提前变亮，等于128的部分不会对光照进行偏移，低于128的部分变暗。
 
@@ -221,7 +221,7 @@ half lambert_term = half_lambert + diffuse_control; // 做一个偏移控制
 half toon_diffuse = saturate((lambert_term - _ToonThreshold) * _ToonHardness);
 ```
 
-<img align="left" width="600" height="400" src="./img/use_lim.png">
+<img  width="600" height="400" src="./img/use_lim.png">
 
 #### 第三步：顶点信息
 
@@ -237,11 +237,11 @@ float ao = i.vertex_color.r;
 half lambert_term = half_lambert * ao + diffuse_control;
 ```
 
-<img align="left" width="600" height="400" src="./img/aomessage.png">
+<img  width="600" height="400" src="./img/aomessage.png">
 
 ### 2.3  当前渲染效果展示
 
-<img align="left" width="500" height="500" src="./gif/toonlisample1.gif">
+<img  width="500" height="500" src="./gif/toonlisample1.gif">
 
 ## 3. 卡通高光
 
@@ -249,11 +249,11 @@ half lambert_term = half_lambert * ao + diffuse_control;
 
 一个完整的效果应该有漫反射和高光反射，上一节完成了漫反射效果。圈中的金属质感部分需要进行高光处理
 
-<img align="left" width="600" height="400" src="./img/needhighlight.png">
+<img  width="600" height="400" src="./img/needhighlight.png">
 
 ILM图的B通道控制高光形状的大小，高光部分越黑越光滑，形状也越小。
 
-<img align="left" width="600" height="400" src="./img/highlightsize.png">
+<img  width="600" height="400" src="./img/highlightsize.png">
 
 使用NotV进行计算，并且为这个值加上偏移结果
 
@@ -268,7 +268,7 @@ float NdotV = (dot(normalDir, viewDir) + 1.0) * 0.5; //拿到NdotV并进行数�
 float spec_trem = NdotV * ao + diffuse_control; // 光线偏移
 ```
 
-<img align="left" width="600" height="400" src="./img/ndotv.png">
+<img width="600" height="400" src="./img/ndotv.png">
 
 **增加高光系数**
 
@@ -286,7 +286,7 @@ spec_trem = half_lambert * 0.9 + spec_trem * 0.1; // 高光权重分配
 half toon_spec = saturate((spec_trem - (1.0 - spec_size * _SpecSize)) * 500); // 内部数值越大越光滑
 ```
 
-<img align="left" width="600" height="400" src="./gif/light.gif">
+<img  width="600" height="400" src="./gif/light.gif">
 
 对高光和Base颜色进行叠加，金属部分光线对比之前漫反射渲染效果有了明显变化。
 
@@ -296,7 +296,7 @@ half3 final_color = final_diffuse + final_spec;
 return float4(final_color, 1.0);
 ```
 
-<img align="left" width="500" height="500" src="./gif/lightdone.gif">
+<img width="500" height="500" src="./gif/lightdone.gif">
 
 ### 3.2 高光颜色优化
 
@@ -308,7 +308,7 @@ half spec_color = (_SpecColor.xyz + base_color) * 0.5;
 half3 final_spec = toon_spec * spec_color * spec_intensity;
 ```
 
-<img align="left" width="600" height="400" src="./img/hightlightcolor.png">
+<img width="600" height="400" src="./img/hightlightcolor.png">
 
-## 4. 角色描边
+## 
 
