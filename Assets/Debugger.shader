@@ -4,8 +4,8 @@ Shader "Debugger"
 {
 	Properties
 	{
-		_DetailMap("DetailMap", 2D) = "white" {}
-		[HideInInspector] _texcoord2( "", 2D ) = "white" {}
+		_BaseMap("BaseMap", 2D) = "white" {}
+		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 		[HideInInspector] __dirty( "", Int ) = 1
 	}
 
@@ -19,7 +19,7 @@ Shader "Debugger"
 		#pragma surface surf StandardCustomLighting keepalpha addshadow fullforwardshadows noforwardadd 
 		struct Input
 		{
-			float2 uv2_texcoord2;
+			float2 uv_texcoord;
 		};
 
 		struct SurfaceOutputCustomLightingCustom
@@ -35,8 +35,8 @@ Shader "Debugger"
 			UnityGIInput GIData;
 		};
 
-		uniform sampler2D _DetailMap;
-		uniform float4 _DetailMap_ST;
+		uniform sampler2D _BaseMap;
+		uniform float4 _BaseMap_ST;
 
 		inline half4 LightingStandardCustomLighting( inout SurfaceOutputCustomLightingCustom s, half3 viewDir, UnityGI gi )
 		{
@@ -57,8 +57,8 @@ Shader "Debugger"
 		{
 			o.SurfInput = i;
 			o.Normal = float3(0,0,1);
-			float2 uv2_DetailMap = i.uv2_texcoord2 * _DetailMap_ST.xy + _DetailMap_ST.zw;
-			o.Emission = tex2D( _DetailMap, uv2_DetailMap ).rgb + 1E-5;
+			float2 uv_BaseMap = i.uv_texcoord * _BaseMap_ST.xy + _BaseMap_ST.zw;
+			o.Emission = tex2D( _BaseMap, uv_BaseMap ).rgb + 1E-5;
 		}
 
 		ENDCG
@@ -68,7 +68,7 @@ Shader "Debugger"
 }
 /*ASEBEGIN
 Version=18500
-1913;12;1920;1017;1642.502;249.6213;1;True;False
+2300;353;957;581;1512.729;279.8325;1.734927;False;False
 Node;AmplifyShaderEditor.SamplerNode;1;-1217.112,-174.0601;Inherit;True;Property;_BaseMap;BaseMap;0;0;Create;True;0;0;False;0;False;-1;120afdeabc4283244a2fddc7f7557da6;549ca234ff9803c438d7a606d8da7f3b;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;2;-1218.688,40.62661;Inherit;True;Property;_SSSMap;SSSMap;1;0;Create;True;0;0;False;0;False;-1;18448eac9c7039c4c96bb8e3e8834348;fc17e2dff9a3b774f94f9f3f0b618230;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;3;-1217.815,252.0593;Inherit;True;Property;_ILM;ILM;2;0;Create;True;0;0;False;0;False;-1;4da5a89cf075fe344a972a145e0fb8c2;4da5a89cf075fe344a972a145e0fb8c2;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -76,6 +76,6 @@ Node;AmplifyShaderEditor.SamplerNode;5;-1217.954,463.413;Inherit;True;Property;_
 Node;AmplifyShaderEditor.NormalVertexDataNode;8;-802.4468,228.2049;Inherit;False;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.VertexColorNode;7;-791.7646,393.9577;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;-381.8499,-2.960076;Float;False;True;-1;2;ASEMaterialInspector;0;0;Standard;Debugger;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;False;-1;0;False;-1;False;0;False;-1;0;False;-1;False;0;Opaque;0.5;True;True;0;False;Opaque;;Geometry;All;14;all;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;2;15;10;25;False;0.5;True;0;0;False;-1;0;False;-1;0;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;-1;-1;-1;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;False;0.1;False;-1;0;False;-1;False;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
-WireConnection;0;15;5;0
+WireConnection;0;15;1;0
 ASEEND*/
-//CHKSM=64198BF897704683D2C05AC3F59B10544CF4A9F4
+//CHKSM=241D3091B446126CB983FBDD29EC2281B2F0075E
