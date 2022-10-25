@@ -87,12 +87,11 @@ Shader "Toon"
                 // 顶点色
                 float ao = i.vertex_color.r;
 
-                // light
+                // 漫反射效果
                 half NdotL = dot(normalDir, lightDir); // 结果在（-1~1）
                 half half_lambert = (NdotL + 1.0) * 0.5; // 缩放到0-1之间
                 half lambert_term = half_lambert * ao + diffuse_control; // 做一个偏移控制
                 // half toon_diffuse = step(0.0, half_lambert); // 色阶化
-
                 // 偏移光照位置
                 half toon_diffuse = saturate((lambert_term - _ToonThreshold) * _ToonHardness);
                 // toon_diffuse = saturate(toon_diffuse + 0.5); // 提亮光照 原来的0.5倍

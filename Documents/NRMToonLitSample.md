@@ -1,5 +1,7 @@
 # NRMToonLitSample
 
+**Author: 文若**
+
 [toc]
 
 **NRM由四张图构成角色渲染，亮部贴图，阴影贴图图，ilm贴图和细节贴图。**
@@ -52,7 +54,7 @@
 遮挡部分颜色较黑，代表环境光的遮挡。剩余通道控制描边的粗细，深度偏移等信息。
 <img align="left" width="600" height="400" src="./img/vertexcolor_r.png">
 
-## 2. 渲染
+## 2. 简单渲染效果
 ### 2.1 基础shader Toon
 ```c#
 Shader "Toon"
@@ -208,11 +210,9 @@ float inner_line = ilm_map.a; // 用来控制内描线
 
 当前头发没有任何阴影，需要为头发末端添加光照阴影。
 
-<img align="left" width="600" height="400" src="./img/hair_shadow.png">
+<img align="left" width="600" height="400" src="./img/hair_lim_g.png">
 
 光照贴图的g通道，提前预设阴影区域，给角色头发做光照偏移的效果。这是一张灰度图，以0.5为分界线，灰度值高于128（0.5）的部分提前变亮，等于128的部分不会对光照进行偏移，低于128的部分变暗。
-
-<img align="left" width="600" height="400" src="./img/hair_lim_g.png">
 
 **使用光照贴图优化**
 
@@ -227,8 +227,6 @@ half toon_diffuse = saturate((lambert_term - _ToonThreshold) * _ToonHardness);
 
 当前效果中裙子内部应该是暗面，利用ao信息来渲染。
 
-<img align="left" width="600" height="400" src="./img/aomessage.png">
-
 ```c#
 float4 vertex_color : TEXCOORD3;
 o.vertex_color = v.color;
@@ -238,3 +236,16 @@ o.vertex_color = v.color;
 float ao = i.vertex_color.r;
 half lambert_term = half_lambert * ao + diffuse_control;
 ```
+
+<img align="left" width="600" height="400" src="./img/aomessage.png">
+
+### 2.3  阶段性渲染效果展示
+
+<img align="left" width="500" height="500" src="./gif/toonlisample1.gif">
+
+## 3. 卡通高光
+
+一个完整的效果应该有漫反射和高光反射，上一节完成了漫反射效果。
+
+<img align="left" width="600" height="400" src="./img/needhighlight.png">
+
