@@ -12,6 +12,7 @@ Shader "Toon"
         _SpecSize ("Spec Size",Range(0,1)) = 0.1 // 高光系数
         _SpecColor ("Spec Color",Color) = (1,1,1,1) // 高光颜色
         _OutlineWidth ("OutLine Width",Range(0,10)) = 5.0 // 外轮廓宽度
+        _OutlineColor ("Outline Color",Color) = (1,1,1,1) // 轮廓颜色
     }
     SubShader
     {
@@ -160,6 +161,7 @@ Shader "Toon"
             sampler2D _SSSMap;
             sampler2D _ILMMap;
             float _OutlineWidth;
+            float4 _OutlineColor;
 
             v2f vert(appdata v)
             {
@@ -170,10 +172,6 @@ Shader "Toon"
                 float3 outline_dir = mul((float3x3)UNITY_MATRIX_V, normal_world);
                 pos_view += outline_dir * _OutlineWidth * 0.001;
                 o.pos = mul(UNITY_MATRIX_P, float4(pos_view, 1.0));
-                // // 顶点外拓 拿到世界坐标
-                // pos_world += normal_world * _OutlineWidth;
-                // // 拿到vp矩阵
-                // o.pos = mul(UNITY_MATRIX_VP, float4(pos_world, 1.0));
                 o.uv = v.texcoord0;
                 o.vertex_color = v.color;
                 return o;
@@ -181,7 +179,13 @@ Shader "Toon"
 
             half4 frag(v2f i) : SV_Target
             {
-                return float4(0, 0, 0, 1.0);
+                // 根据给定颜色降低对比度，降低饱和度，使得颜色偏暗
+                float3 baseColor = tex2D(_BaseMap, i.uv.xy).xyz;
+                half maxComponent = max(max(baseColor.r, baseColor.g), baseColor.b) - 0.004;
+                half3 saturatedColor = step(maxComponent.rrr, baseColor) * baseColor;
+                saturatedColor = lerp(baseColor.rgb, saturatedColor, 0.6);
+                half3 outlineColor = 0.8 * saturatedColor * baseColor * _OutlineColor.xyz;
+                return float4(outlineColor, 1.0);
             }
             ENDCG
         }

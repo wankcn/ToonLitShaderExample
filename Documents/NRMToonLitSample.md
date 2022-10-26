@@ -417,4 +417,22 @@ o.pos = mul(UNITY_MATRIX_P, float4(pos_view, 1.0));
 
 ### 6.2 边缘颜色融合
 
-todo
+根据自定义描边颜色降低对比度，降低饱和度，使得颜色偏暗
+
+```c#
+_OutlineColor ("Outline Color",Color) = (1,1,1,1) // 轮廓颜色
+```
+
+```c#
+half4 frag(v2f i) : SV_Target
+{
+    float3 baseColor = tex2D(_BaseMap, i.uv.xy).xyz;
+    half maxComponent = max(max(baseColor.r, baseColor.g), baseColor.b) - 0.004;
+    half3 saturatedColor = step(maxComponent.rrr, baseColor) * baseColor;
+    saturatedColor = lerp(baseColor.rgb, saturatedColor, 0.6);
+    half3 outlineColor = 0.8 * saturatedColor * baseColor * _OutlineColor.xyz;
+    return float4(outlineColor, 1.0);
+}
+```
+
+<img width="600" height="400" src="./img/outline.png">
