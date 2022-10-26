@@ -436,3 +436,13 @@ half4 frag(v2f i) : SV_Target
 ```
 
 <img width="600" height="400" src="./img/outline.png">
+
+## 7. 效果展示
+
+**全身效果**
+
+<img width="500" height="500" src="./gif/demo1.gif">
+
+**半身效果**
+
+<img width="600" height="400" src="./gif/demo2.gif">
