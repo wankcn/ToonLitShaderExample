@@ -47,9 +47,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _Outline: 5
+    - _OutlineWidth: 5
     - _SpecSize: 0.15
     - _ToonHardness: 50
     - _ToonThreshold: 0.6
     m_Colors:
+    - _OutlineColor: {r: 0.71162856, g: 0.2747864, b: 0.8962264, a: 1}
     - _SpecColor: {r: 0.9811321, g: 0.70037436, b: 0.1527234, a: 1}
   m_BuildTextureStacks: []
