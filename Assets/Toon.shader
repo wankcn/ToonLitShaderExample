@@ -11,6 +11,7 @@ Shader "Toon"
         _ToonHardness ("ToonHardness",Float) = 20.0 // 过渡的生硬情况
         _SpecSize ("Spec Size",Range(0,1)) = 0.1 // 高光系数
         _SpecColor ("Spec Color",Color) = (1,1,1,1) // 高光颜色
+        _OutlineWidth ("OutLine Width",Range(0,10)) = 5.0 // 外轮廓宽度
     }
     SubShader
     {
@@ -126,6 +127,61 @@ Shader "Toon"
                 // 色彩校正
                 final_color = sqrt(max(exp2(log2(max(final_color, 0.0)) * 2.2), 0.0));
                 return float4(final_color, 1.0);
+            }
+            ENDCG
+        }
+
+        Pass
+        {
+            Cull Front
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdbase
+            #include "UnityCG.cginc"
+            #include "AutoLight.cginc"
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float2 texcoord0 : TEXCOORD0;
+                float3 normal : NORMAL;
+                float4 color : COLOR;
+            };
+
+            struct v2f
+            {
+                float4 pos : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 vertex_color : TEXCOORD1;
+            };
+
+            sampler2D _BaseMap;
+            sampler2D _SSSMap;
+            sampler2D _ILMMap;
+            float _OutlineWidth;
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float3 pos_view = UnityObjectToViewPos(v.vertex);
+                // 观察空间下的normal方向
+                float3 normal_world = UnityObjectToWorldNormal(v.normal);
+                float3 outline_dir = mul((float3x3)UNITY_MATRIX_V, normal_world);
+                pos_view += outline_dir * _OutlineWidth * 0.001;
+                o.pos = mul(UNITY_MATRIX_P, float4(pos_view, 1.0));
+                // // 顶点外拓 拿到世界坐标
+                // pos_world += normal_world * _OutlineWidth;
+                // // 拿到vp矩阵
+                // o.pos = mul(UNITY_MATRIX_VP, float4(pos_world, 1.0));
+                o.uv = v.texcoord0;
+                o.vertex_color = v.color;
+                return o;
+            }
+
+            half4 frag(v2f i) : SV_Target
+            {
+                return float4(0, 0, 0, 1.0);
             }
             ENDCG
         }

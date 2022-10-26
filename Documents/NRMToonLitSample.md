@@ -319,9 +319,9 @@ half3 final_spec = toon_spec * spec_color * spec_intensity;
 
 <img width="600" height="400" src="./img/hightlightcolor.png">
 
-## 4. 描边
+## 4. 内描线
 
-### 4.1 增加描线效果
+### 4.1 增加内描线效果
 
 光照贴图的alpha通道用来控制内描线
 
@@ -376,3 +376,45 @@ final_color = sqrt(max(exp2(log2(max(final_color, 0.0)) * 2.2), 0.0));
 ```
 
 <img width="600" height="400" src="./img/jiaozheng.png">
+
+## 6. 外描边
+
+### 6.1 轮廓描边实现
+
+外轮廓的描线做法，使用双通道，在Pass2中拿到角色在对应空间坐标上的顶点，根据顶点得到法线，在法线上对顶点进行外拓。
+```c#
+_OutlineWidth ("OutLine Width",Range(0,10)) = 5.0 // 外轮廓宽度
+```
+
+**世界空间坐标下外拓实现**
+
+```c#
+float3 pos_world = mul(unity_ObjectToWorld, v.vertex).xyz;
+float3 normal_world = UnityObjectToWorldNormal(v.normal);
+// 顶点外拓 拿到世界坐标
+pos_world += normal_world * _OutlineWidth * 0.001;
+// 拿到vp矩阵
+o.pos = mul(UNITY_MATRIX_VP, float4(pos_world, 1.0));
+```
+
+```c#
+return float4(0, 0, 0, 1.0); // 黑色描边
+```
+
+**观察空间坐标下外拓实现**
+
+```c#
+float3 pos_view = UnityObjectToViewPos(v.vertex);
+// 观察空间下的normal方向
+float3 normal_world = UnityObjectToWorldNormal(v.normal);
+float3 outline_dir = mul((float3x3)UNITY_MATRIX_V, normal_world);
+pos_view += outline_dir * _OutlineWidth * 0.001;
+o.pos = mul(UNITY_MATRIX_P, float4(pos_view, 1.0));
+```
+**轮廓描边效果**
+
+<img width="600" height="400" src="./img/drawline.png">
+
+### 6.2 边缘颜色融合
+
+todo

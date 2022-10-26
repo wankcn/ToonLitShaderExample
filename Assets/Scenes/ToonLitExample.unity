@@ -904,6 +904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NRM_Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: 100096, guid: 66cb512a2c2097e45892358d64884d27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400096, guid: 66cb512a2c2097e45892358d64884d27, type: 3}
       propertyPath: m_RootOrder
       value: 2

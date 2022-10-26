@@ -46,6 +46,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Outline: 5
     - _SpecSize: 0.1
     - _ToonHardness: 20
     - _ToonThreshold: 0.6
