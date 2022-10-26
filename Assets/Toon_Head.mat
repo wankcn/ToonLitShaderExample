@@ -24,6 +24,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 120afdeabc4283244a2fddc7f7557da6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DetailMap:
+        m_Texture: {fileID: 2800000, guid: d6b0c2303945983458ce989f2d702696, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ILM:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -45,5 +49,6 @@ Material:
     - _SpecSize: 0.1
     - _ToonHardness: 20
     - _ToonThreshold: 0.6
-    m_Colors: []
+    m_Colors:
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

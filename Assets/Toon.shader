@@ -5,6 +5,7 @@ Shader "Toon"
         _BaseMap ("Base Map", 2D) = "white" {}
         _SSSMap ("SSS Map", 2D) = "black" {}
         _ILMMap ("ILM Map", 2D) = "gray" {}
+        _DetailMap ("Detail Map", 2D) = "white" {}
 
         _ToonThreshold ("ToonThreshold", Range(0,1)) = 0.5 // 阈值范围
         _ToonHardness ("ToonHardness",Float) = 20.0 // 过渡的生硬情况
@@ -49,6 +50,7 @@ Shader "Toon"
             sampler2D _BaseMap;
             sampler2D _SSSMap;
             sampler2D _ILMMap;
+            sampler2D _DetailMap;
             float _ToonThreshold;
             float _ToonHardness;
             float _SpecSize;
@@ -116,8 +118,13 @@ Shader "Toon"
                 half3 final_spec = toon_spec * spec_color * spec_intensity;
 
                 // 描线效果
-                
-                half3 final_color = final_diffuse + final_spec;
+                half3 inner_line_color = lerp(base_color * 0.2, float3(1.0, 1.0, 1.0), inner_line);
+                half3 detail_color = tex2D(_DetailMap, uv2); // 采样detail map 使用第二套uv
+                detail_color = lerp(base_color * 0.2, float3(1.0, 1.0, 1.0), detail_color);
+                half3 final_line = inner_line_color * inner_line_color * detail_color;
+                half3 final_color = (final_diffuse + final_spec) * final_line;
+                // 色彩校正
+                final_color = sqrt(max(exp2(log2(max(final_color, 0.0)) * 2.2), 0.0));
                 return float4(final_color, 1.0);
             }
             ENDCG

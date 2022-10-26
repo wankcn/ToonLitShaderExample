@@ -319,4 +319,60 @@ half3 final_spec = toon_spec * spec_color * spec_intensity;
 
 <img width="600" height="400" src="./img/hightlightcolor.png">
 
+## 4. 描边
 
+### 4.1 增加描线效果
+
+光照贴图的alpha通道用来控制内描线
+
+```c#
+float inner_line = ilm_map.a;
+```
+
+将描线效果叠加到当前颜色上
+
+```c#
+half3 final_line = inner_line.xxx; // 描线效果
+half3 final_color = (final_diffuse + final_spec) * final_line;
+return float4(final_color, 1.0);
+```
+
+<img width="600" height="400" src="./img/inner_line.png">
+
+### 4.2 使用DetailMap
+
+detail map 的uv更加随意，可以勾勒出一些圆滑的斜线等。但是该贴图非常的大，只有高清二点情况下才能避免模糊。
+
+```c#
+half3 detail_color = tex2D(_DetailMap, uv2); // 采样detail map 使用第二套uv
+half3 final_line = inner_line.xxx * detail_color;
+half3 final_color = (final_diffuse + final_spec) * final_line;
+return float4(final_color, 1.0);
+```
+
+<img width="600" height="400" src="./img/detailmap.png">
+
+### 4.3 描线融合与增强
+
+使用插值将内描线线条增强并与皮肤颜色融合
+
+```c#
+half3 detail_color = tex2D(_DetailMap, uv2); // 采样detail map 使用第二套uv
+detail_color = lerp(base_color * 0.2, float3(1.0, 1.0, 1.0), detail_color);
+half3 inner_line_color = lerp(base_color * 0.2, float3(1.0, 1.0, 1.0), inner_line);
+half3 final_line = inner_line_color * inner_line_color * detail_color;
+half3 final_color = (final_diffuse + final_spec) * final_line;
+return float4(final_color, 1.0);
+```
+
+<img width="600" height="400" src="./img/ronghe.png">
+
+## 5. 色彩校正
+
+类Tone Mapping做法，将色彩进行微细的调整，稍微对比度压暗了一丢丢
+
+```
+final_color = sqrt(max(exp2(log2(max(final_color, 0.0)) * 2.2), 0.0));
+```
+
+<img width="600" height="400" src="./img/jiaozheng.png">
