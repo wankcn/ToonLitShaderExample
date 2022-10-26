@@ -19,6 +19,7 @@
 
 **亮部贴图Alpha**
 用于区分人物的皮肤区域以及非皮肤区域。
+
 <img  width="600" height="400" src="./img/skin08base_a.png">
 
 ### 1.2 阴影
@@ -39,6 +40,7 @@
 
 **G通道**
 偏移光照，越黑部分越接近阴影，越白部分越接近亮部。128中度灰不会对原来光线进行偏移。
+
 <img  width="600" height="400" src="./img/ilm_g.png">
 
 **B通道**
@@ -54,6 +56,7 @@
 ### 1.4 DetailMap
 **Detail的RGBA**
 使用第二套UV采样，也是描线图。但UV分部并不严格。按照第二套UV做点缀使用。
+
 <img  width="600" height="400" src="./img/detail.png">
 
 ### 1.5 顶点色
