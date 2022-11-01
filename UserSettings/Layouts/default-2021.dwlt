@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 1007
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 83
+  controlID: 136
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 18
+  controlID: 102
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -519,21 +519,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: f0e7ffff
       m_LastClickedID: -6160
-      m_ExpandedIDs: dce7fffff4e7fffff6f1ffffa8f6ffff30fbfffffa5f0000
+      m_ExpandedIDs: f4e7ffff30fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: NRM_body
-        m_OriginalName: NRM_body
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -3588
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -624,7 +624,8 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SkipHidden: 0
     m_SearchArea: 1
-    m_Folders: []
+    m_Folders:
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 0
@@ -638,7 +639,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 2cb80000
     m_LastClickedID: 47148
-    m_ExpandedIDs: 000000000e6000006a6b00006c6b00006e6b0000706b0000726b0000746b0000766b0000786b00007a6b00007c6b00007e6b0000806b0000826b0000846b0000866b0000886b0000
+    m_ExpandedIDs: 00000000ea6a0000ec6a0000ee6a0000f06a0000f26a0000f46a0000f66a0000f86a0000fa6a0000fc6a0000fe6a0000006b0000026b0000046b0000066b0000086b00000a6b00000c6b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -663,24 +664,24 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_AssetTreeState:
-    scrollPos: {x: 0, y: 82}
+    scrollPos: {x: 0, y: 454}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff000000006a6b00006e6b0000706b0000726b0000746b0000766b00007a6b00007e6b0000806b0000826b0000846b0000866b0000886b0000c46b0000c66b0000d46b0000806e0000
+    m_ExpandedIDs: ffffffff00000000ea6a0000ec6a0000ee6a0000f06a0000f26a0000f46a0000f66a0000f86a0000fa6a0000fc6a0000fe6a0000006b0000026b0000046b0000066b0000086b00000a6b00000c6b0000406b0000866b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Toon_Body
-      m_OriginalName: Toon_Body
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: -15178
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 8}
     m_SearchString: 
@@ -1039,7 +1040,7 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.742398, y: -3.640958, z: 1.8954723}
+    m_Target: {x: 0.80687463, y: 5.726033, z: 3.2587671}
     speed: 2
     m_Value: {x: -1.742398, y: -3.640958, z: 1.8954723}
   m_RenderMode: 0
@@ -1088,13 +1089,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.3697995, y: 0.18841024, z: -0.07685473, w: -0.90656245}
+    m_Target: {x: -0.11520912, y: -0.07649613, z: 0.008899297, w: -0.9903609}
     speed: 2
-    m_Value: {x: -0.36979726, y: 0.18840909, z: -0.07685426, w: -0.90655696}
+    m_Value: {x: -0.3697995, y: 0.18841022, z: -0.07685473, w: -0.90656245}
   m_Size:
-    m_Target: 3.8146946
+    m_Target: 30.17553
     speed: 2
-    m_Value: 3.8146946
+    m_Value: 31.597412
   m_Ortho:
     m_Target: 0
     speed: 2
